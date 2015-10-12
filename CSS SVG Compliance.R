@@ -1,5 +1,5 @@
-install.packages('stringr') # to install the library. You can delete it after first firing
-librry(stringr) # is needed for splitting strings (str_split function)
+# install.packages('stringr') # to install the library. You can delete it after first firing
+library(stringr) # is needed for splitting strings (str_split function)
 setwd('Documents//Learning//R//CSS SVG Compliance')
 
 f <- readLines('hex2.svg') # reading SVG by lines. The result is an array
@@ -22,11 +22,10 @@ for ( i in (style_close+1) : (style_close+length(colors)) ) { # from style tags 
    color_num <- i - style_close # index for colors array
    
    split_pos <- str_locate(f[i], ' points')[[1]] # assuming we want to paste colors before points. [[1]] means we take only start position (function result is 2 numbers: start & end)
-   begin <- substr(f[i], 1, split_pos) # the substring to paste before a color
-   end   <- substr(f[i], split_pos + 1, nchar(f[i])) # the substring to pase after a color. nchar returns number of chracters
-   color <- str_c('fill = "', colors[color_num], '" ')
+   begin <- substr(f[i], 1, nchar(f[i])-2) # the substring to paste before a color
+   color <- str_c('fill = "', colors[color_num], '"')
    
-   f[i] <- str_c(begin, color, end)
+   f[i] <- str_c(begin, " ", color, "/>")
 }
 
 writeLines(f, 'hex2_colors.svg')
